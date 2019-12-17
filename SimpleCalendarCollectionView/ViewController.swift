@@ -40,11 +40,9 @@ class ViewController: UIViewController {
         let width: CGFloat = floor(adjustedWidth / columns)
 
         //create 7 labels for each weekday of cell width and add them to a stack view
-//        let labelSize = CGRect(x: 0, y: 0, width: width, height: 15)
 
-        
         let weekDView = UIStackView()
-        weekDView.translatesAutoresizingMaskIntoConstraints = false
+//        weekDView.translatesAutoresizingMaskIntoConstraints = false
         weekDView.axis = .horizontal
         weekDView.spacing = flowLayout.minimumInteritemSpacing
 //        weekDView.widthAnchor.constraint(equalToConstant: collectionViewWidth).isActive = true
@@ -60,7 +58,7 @@ class ViewController: UIViewController {
         if let navSuperView = navigationItem.titleView?.superview {
             NSLayoutConstraint.activate([(navigationItem.titleView?.centerXAnchor.constraint(equalTo: navSuperView.centerXAnchor))!,
                                          (navigationItem.titleView?.centerYAnchor.constraint(equalTo: navSuperView.centerYAnchor))!,
-                                         (navigationItem.titleView?.widthAnchor.constraint(equalTo: navSuperView.widthAnchor))!,
+                                         (navigationItem.titleView?.widthAnchor.constraint(equalToConstant: collectionViewWidth))!,
                                          (navigationItem.titleView?.heightAnchor.constraint(equalTo: navSuperView.heightAnchor))!
             ])
         }
