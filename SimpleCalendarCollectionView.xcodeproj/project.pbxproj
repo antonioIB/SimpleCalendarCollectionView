@@ -14,6 +14,8 @@
 		E383C2D723A752B40045CDCB /* SimpleCalendarCollectionView.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E383C2D523A752B40045CDCB /* SimpleCalendarCollectionView.xcdatamodeld */; };
 		E383C2D923A752B90045CDCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E383C2D823A752B90045CDCB /* Assets.xcassets */; };
 		E383C2DC23A752B90045CDCB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E383C2DA23A752B90045CDCB /* LaunchScreen.storyboard */; };
+		E383C2E423A75A000045CDCB /* MonthHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E383C2E323A75A000045CDCB /* MonthHeaderView.swift */; };
+		E383C2E623A75AAA0045CDCB /* DayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E383C2E523A75AAA0045CDCB /* DayCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		E383C2D823A752B90045CDCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E383C2DB23A752B90045CDCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E383C2DD23A752B90045CDCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E383C2E323A75A000045CDCB /* MonthHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthHeaderView.swift; sourceTree = "<group>"; };
+		E383C2E523A75AAA0045CDCB /* DayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 				E383C2CC23A752B40045CDCB /* AppDelegate.swift */,
 				E383C2CE23A752B40045CDCB /* SceneDelegate.swift */,
 				E383C2D023A752B40045CDCB /* ViewController.swift */,
+				E383C2E323A75A000045CDCB /* MonthHeaderView.swift */,
+				E383C2E523A75AAA0045CDCB /* DayCollectionViewCell.swift */,
 				E383C2D223A752B40045CDCB /* Main.storyboard */,
 				E383C2D823A752B90045CDCB /* Assets.xcassets */,
 				E383C2DA23A752B90045CDCB /* LaunchScreen.storyboard */,
@@ -142,9 +148,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E383C2D723A752B40045CDCB /* SimpleCalendarCollectionView.xcdatamodeld in Sources */,
+				E383C2E623A75AAA0045CDCB /* DayCollectionViewCell.swift in Sources */,
 				E383C2D123A752B40045CDCB /* ViewController.swift in Sources */,
 				E383C2CD23A752B40045CDCB /* AppDelegate.swift in Sources */,
 				E383C2CF23A752B40045CDCB /* SceneDelegate.swift in Sources */,
+				E383C2E423A75A000045CDCB /* MonthHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
