@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         //get Cell width
         let columns: CGFloat = 7
         let collectionViewWidth = calendarCollectionView.bounds.width
+        print("CollectionViewWidth: \(collectionViewWidth)")
         let flowLayout = calendarCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         let spaceBetweenCells = flowLayout.minimumInteritemSpacing * (columns - 1)
         let adjustedWidth = collectionViewWidth - spaceBetweenCells
@@ -46,6 +47,8 @@ class ViewController: UIViewController {
         weekDView.axis = .horizontal
         weekDView.spacing = flowLayout.minimumInteritemSpacing
 //        weekDView.widthAnchor.constraint(equalToConstant: collectionViewWidth).isActive = true
+        print("Spacing: \(weekDView.spacing)")
+//        weekDView.widthAnchor.constraint(equalToConstant: collectionViewWidth).isActive = true
 
         for i in 0...6 {
             let label = createWeekLabel(day: i)
@@ -55,12 +58,20 @@ class ViewController: UIViewController {
         
         navigationItem.titleView = weekDView
         
-        if let navSuperView = navigationItem.titleView?.superview {
-            NSLayoutConstraint.activate([(navigationItem.titleView?.centerXAnchor.constraint(equalTo: navSuperView.centerXAnchor))!,
-                                         (navigationItem.titleView?.centerYAnchor.constraint(equalTo: navSuperView.centerYAnchor))!,
-                                         (navigationItem.titleView?.widthAnchor.constraint(equalToConstant: collectionViewWidth))!,
-                                         (navigationItem.titleView?.heightAnchor.constraint(equalTo: navSuperView.heightAnchor))!
-            ])
+        if UIDevice.current.orientation.isLandscape {
+            if let navSuperView = navigationItem.titleView?.superview {
+                NSLayoutConstraint.activate([(navigationItem.titleView?.centerXAnchor.constraint(equalTo: navSuperView.centerXAnchor))!,
+                                             (navigationItem.titleView?.centerYAnchor.constraint(equalTo: navSuperView.centerYAnchor))!,
+                                             (navigationItem.titleView?.widthAnchor.constraint(equalToConstant: collectionViewWidth))!,
+                                             (navigationItem.titleView?.heightAnchor.constraint(equalTo: navSuperView.heightAnchor))! ])
+            }
+        } else {
+            if let navSuperView = navigationItem.titleView?.superview {
+                NSLayoutConstraint.activate([(navigationItem.titleView?.centerXAnchor.constraint(equalTo: navSuperView.centerXAnchor))!,
+                                             (navigationItem.titleView?.centerYAnchor.constraint(equalTo: navSuperView.centerYAnchor))!,
+                                             (navigationItem.titleView?.leadingAnchor.constraint(equalTo: navSuperView.leadingAnchor))!,
+                                             (navigationItem.titleView?.heightAnchor.constraint(equalTo: navSuperView.heightAnchor))! ])
+            }
         }
     }
     
