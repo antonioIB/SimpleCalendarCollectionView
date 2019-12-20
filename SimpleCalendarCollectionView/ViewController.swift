@@ -20,14 +20,24 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //test
+        calendarCollectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
         if let layout = calendarCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionHeadersPinToVisibleBounds = true
         }
-        setUpWeekdays()
-                
+//        setUpWeekdays()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        calendarCollectionView.removeObserver(self, forKeyPath: "contentSize")
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let observedObject = object as? UICollectionView, observedObject == calendarCollectionView {
+            setUpWeekdays()
+        }
     }
     
     private func setUpWeekdays() {
@@ -153,7 +163,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         let adjustedHeight = collectionViewHeight - spaceBetweenRows
         let height: CGFloat = floor(adjustedHeight / rows)
         
-        setUpWeekdays()
+//        setUpWeekdays()
         
         
         return CGSize(width: width, height: height)
