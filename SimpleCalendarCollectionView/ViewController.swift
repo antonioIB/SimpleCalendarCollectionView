@@ -11,61 +11,55 @@ import UIKit
 class ViewController: UIViewController {
     let calendar = Calendar.current
     let dateFormatter = DateFormatter()
-//    var date = Date()
 
-    
-
-    
     @IBOutlet weak var calendarCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Registr UICollectionView to the ViewController
         calendarCollectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
+        //Fixes spacing issues
         if let layout = calendarCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionHeadersPinToVisibleBounds = true
         }
-//        setUpWeekdays()
     }
     
+    //Fixes respacing issues when changing orientation
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        self.calendarCollectionView.reloadData()
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         calendarCollectionView.removeObserver(self, forKeyPath: "contentSize")
     }
-    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let observedObject = object as? UICollectionView, observedObject == calendarCollectionView {
             setUpWeekdays()
         }
     }
     
+    //Creates Sun-Sat labels in NavigationBar titlebar
     private func setUpWeekdays() {
-        //get Cell width
+        //get collection view cell width
         let columns: CGFloat = 7
         let collectionViewWidth = calendarCollectionView.bounds.width
-        print("CollectionViewWidth: \(collectionViewWidth)")
         let flowLayout = calendarCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         let spaceBetweenCells = flowLayout.minimumInteritemSpacing * (columns - 1)
         let adjustedWidth = collectionViewWidth - spaceBetweenCells
         let width: CGFloat = floor(adjustedWidth / columns)
 
-        //create 7 labels for each weekday of cell width and add them to a stack view
-
+        //create 7 labels for each weekday and align them with the collection view cells
         let weekDView = UIStackView()
-//        weekDView.translatesAutoresizingMaskIntoConstraints = false
         weekDView.axis = .horizontal
         weekDView.spacing = flowLayout.minimumInteritemSpacing
-//        weekDView.widthAnchor.constraint(equalToConstant: collectionViewWidth).isActive = true
-        print("Spacing: \(weekDView.spacing)")
-//        weekDView.widthAnchor.constraint(equalToConstant: collectionViewWidth).isActive = true
-
         for i in 0...6 {
             let label = createWeekLabel(day: i)
             label.widthAnchor.constraint(equalToConstant: width).isActive = true
             weekDView.addArrangedSubview(label)
         }
-        
+
         navigationItem.titleView = weekDView
         
         if UIDevice.current.orientation.isLandscape {
@@ -84,7 +78,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
     private func createWeekLabel(day: Int) -> UILabel {
         let label = UILabel()
         label.text = dateFormatter.shortWeekdaySymbols[day]
@@ -93,11 +86,14 @@ class ViewController: UIViewController {
     }
 }
 
+
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    //12 sections = 12 months (1 year)
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 12
     }
-    // working
+
+    //returns # of cells as 35 or 42 depending on how many rows the months needs
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var currComponents = DateComponents()
         currComponents.year = calendar.component(.year, from: Date())
@@ -119,24 +115,30 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         }
         return 35
     }
-    // working
+
+    //Creates cell starting on column of first weekday followed by number of months in section
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DayCell", for: indexPath) as! DayCollectionViewCell
 
+        //Create a date object with current section # as the month and current year
         var currComponents = DateComponents()
         currComponents.year = calendar.component(.year, from: Date())
         currComponents.month = indexPath.section + 1
         let date = calendar.date(from: currComponents)!
         
+        //Get weekday of the first day of the month
+        //TO-DO: use date above instead of recreating a date object
         let components = calendar.dateComponents([.year, .month], from: date)
         let startOfMonth = calendar.date(from: components)!
         let firstWeekday = calendar.component(.weekday, from: startOfMonth)
         
+        //Get next month and subtract one day to get number of days in month
         let nextMonth = calendar.date(byAdding: .month, value: 1, to: date)!
         let startOfNextMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: nextMonth))!
         let lastDay = calendar.date(byAdding: .day, value: -1, to: startOfNextMonth)!
         let nDays = calendar.component(.day, from: lastDay)
         
+        //Hide cells that are before first weekday and after number of days in month
         let currDate = indexPath.item - firstWeekday + 2
         if (indexPath.item + 1) < firstWeekday || currDate > nDays {
             cell.contentView.alpha = 0
@@ -147,7 +149,8 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         
         return cell
     }
-    //working
+
+    //Calculate an equal sized number of cells
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let columns: CGFloat = 7
@@ -162,13 +165,12 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         let spaceBetweenRows = flowLayout.minimumInteritemSpacing * (rows - 1)
         let adjustedHeight = collectionViewHeight - spaceBetweenRows
         let height: CGFloat = floor(adjustedHeight / rows)
-        
-//        setUpWeekdays()
-        
+                
         
         return CGSize(width: width, height: height)
     }
-    //working
+
+    //Add a header containing the month by converting section# to month
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MonthHeader", for: indexPath) as! MonthHeaderView
         
