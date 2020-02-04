@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         calendarCollectionView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
         calendarCollectionView.dataSource = self
         calendarCollectionView.delegate = self
-        //Fixes spacing issues
+        //Pins the header to the top
         if let layout = calendarCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionHeadersPinToVisibleBounds = true
         }
@@ -30,10 +30,12 @@ class ViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.calendarCollectionView.reloadData()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         calendarCollectionView.removeObserver(self, forKeyPath: "contentSize")
     }
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let observedObject = object as? UICollectionView, observedObject == calendarCollectionView {
             setUpWeekdays()
