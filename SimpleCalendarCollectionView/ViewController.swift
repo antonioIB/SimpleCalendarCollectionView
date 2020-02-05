@@ -64,6 +64,7 @@ class ViewController: UIViewController {
 
         navigationItem.titleView = weekDView
         
+        //Fixes spacing issues with TitleView constraints in Landscape
         if UIDevice.current.orientation.isLandscape {
             if let navSuperView = navigationItem.titleView?.superview {
                 NSLayoutConstraint.activate([(navigationItem.titleView?.centerXAnchor.constraint(equalTo: navSuperView.centerXAnchor))!,
